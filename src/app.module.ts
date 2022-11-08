@@ -2,10 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserController } from './user/user.controller';
+import { UserService } from './user/user.service';
 import { LetterController } from './letter/letter.controller';
+import { LetterService } from './letter/letter.service';
 import { GroupController } from './group/group.controller';
+import { GroupService } from './group/group.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
+import { LetterModule } from './letter/letter.module';
+import { GroupModule } from './group/group.module';
 const ENV=process.env;
 
 @Module({
@@ -23,8 +29,11 @@ const ENV=process.env;
       entities: [],
       synchronize: ENV.SYNCHROIZE as unknown as boolean,
     }),
+    UserModule,
+    LetterModule,
+    GroupModule,
   ],
   controllers: [AppController, UserController, LetterController, GroupController],
-  providers: [AppService],
+  providers: [AppService, UserService, ,LetterService, GroupService],
 })
 export class AppModule {}
