@@ -33,7 +33,7 @@ const ENV=process.env;
     LetterModule,
     GroupModule,
   ],
-  controllers: [AppController, UserController, LetterController, GroupController],
-  providers: [AppService, UserService, ,LetterService, GroupService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
