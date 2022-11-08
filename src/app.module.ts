@@ -1,21 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from './user/user.controller';
-import { UserService } from './user/user.service';
-import { LetterController } from './letter/letter.controller';
-import { LetterService } from './letter/letter.service';
-import { GroupController } from './group/group.controller';
-import { GroupService } from './group/group.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { LetterModule } from './letter/letter.module';
 import { GroupModule } from './group/group.module';
+import { CreateUserDto } from './user/dto/create-user.dto';
+
 const ENV=process.env;
 
 @Module({
   imports: [
+    UserModule,
+    LetterModule,
+    GroupModule,
     ConfigModule.forRoot({
       envFilePath: (ENV.NODE_ENV === 'production') ? '.production.env' : '.development.env'
     }),
@@ -26,14 +25,11 @@ const ENV=process.env;
       username: ENV.DATABASE_USERNAME,
       password: ENV.DATABASE_PASSWORD,
       database: ENV.DATABASE,
-      entities: [],
+      entities: [CreateUserDto],
       synchronize: ENV.SYNCHROIZE as unknown as boolean,
     }),
-    UserModule,
-    LetterModule,
-    GroupModule,
   ],
-  controllers: [AppController, UserController, LetterController, GroupController],
-  providers: [AppService, UserService, ,LetterService, GroupService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
