@@ -4,23 +4,23 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  private users: CreateUserDto[] = [
+    new CreateUserDto('lee1', '이정주'),
+    new CreateUserDto('kim1', '김명일'),
+  ];
+  findAll() : Promise<CreateUserDto[]> {
+    return new Promise((resolve) =>
+      setTimeout(
+        () => resolve(this.users),
+        100,
+      ),
+    );
   }
-
-  findAll() {
-    return `This action returns all user`;
+  findOne(id: string) : CreateUserDto | object {
+    const foundOne = this.users.filter(user => user.userId === id);
+    return foundOne.length ? foundOne[0] : { msg: 'nothing' };
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  saveUser(createUserDto: CreateUserDto) : void {
+    this.users = [...this.users, createUserDto];
   }
 }
