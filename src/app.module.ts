@@ -22,6 +22,7 @@ const ENV=process.env;
       database: ENV.DATABASE,
       entities: [],
       synchronize: ENV.SYNCHROIZE as unknown as boolean,
+      logging:true,
     }),
     UserModule,
     LetterModule,
