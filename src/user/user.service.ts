@@ -1,26 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-  private users: CreateUserDto[] = [
-    new CreateUserDto('lee1', '이정주'),
-    new CreateUserDto('kim1', '김명일'),
-  ];
-  findAll() : Promise<CreateUserDto[]> {
-    return new Promise((resolve) =>
-      setTimeout(
-        () => resolve(this.users),
-        100,
-      ),
-    );
+  constructor(
+    @InjectRepository(UserDto) private userRepository: Repository<UserDto>,
+  ) {
+    this.userRepository = userRepository;
   }
-  findOne(id: string) : CreateUserDto | object {
-    const foundOne = this.users.filter(user => user.userId === id);
-    return foundOne.length ? foundOne[0] : { msg: 'nothing' };
+  private async saveUser(email: string, password: string, nickname: string,signupVerifyToken: string) {
+    const user = new UserDto();
+    user.email = email;
+    user.password = password;
+    user.nickname = nickname;
+    await this.userRepository.save(user);
   }
-  saveUser(createUserDto: CreateUserDto) : void {
-    this.users = [...this.users, createUserDto];
+  private async findOneBy(userId: number): Promise<UserDto> { 
+    const user = await this.userRepository.findOneBy({ userId:userId});
+  
+    return  user;
+  }
+  public async findUserIdOne(userId: number): Promise<UserDto> { 
+    const userDto = await this.findOneBy(userId);
+    return  userDto;
   }
 }
