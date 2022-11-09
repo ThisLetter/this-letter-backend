@@ -9,16 +9,14 @@ import {
  } from 'typeorm/index';
 
 @Entity({
-    database: 'this_letter',
-    name:'user',
     orderBy:{
-        id: 'DESC'
+        userId: 'DESC'
       }
 })
 export class UserDto {
     @PrimaryGeneratedColumn()
-    userid: number;
-    @Column({
+    userId: number;
+    @PrimaryColumn({
         type: 'varchar',
         comment: 'email',
       })
@@ -34,7 +32,7 @@ export class UserDto {
       })
     nickname: string;
     @Column({
-        type: 'string',
+        type: 'varchar',
         comment: 'phonenumber',
       })
     phonenumber: string;
@@ -45,10 +43,10 @@ export class UserDto {
      })
     secondcertifi: boolean;
     @Column({
-        type: 'int',
+        type: 'json',
         comment: 'groupids',
       })
-    groupids: number;
+    groupIds: object;
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
     createdAt: Date;
     @UpdateDateColumn({ name: 'update_at', comment: '수정일' })
