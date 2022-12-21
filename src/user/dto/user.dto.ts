@@ -46,7 +46,7 @@ export class UserDto {
         type: 'json',
         comment: 'groupids',
       })
-    groupIds: object;
+    groupIds: number[]|null;
     @CreateDateColumn({ name: 'create_at', comment: '생성일' })
     createdAt: Date;
     @UpdateDateColumn({ name: 'update_at', comment: '수정일' })
